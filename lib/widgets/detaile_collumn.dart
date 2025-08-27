@@ -22,7 +22,7 @@ class DetaileCollumn extends StatelessWidget {
       children: [
         Icon(icon, color: color),
         Text(
-          "$value $unity",
+          "${value.toStringAsFixed(2)} $unity",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         Text(name, style: TextStyle(color: Colors.white)),

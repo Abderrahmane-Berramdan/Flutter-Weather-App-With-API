@@ -1,53 +1,73 @@
-class WatherModel {
+class WeatherModel {
+  final String name;
+  final Temperature temperature;
+  final List<WeatherInfo> weatherInfo;
+  final Wind wind;
 
+  WeatherModel({
+    required this.name,
+    required this.temperature,
+    required this.weatherInfo,
+    required this.wind,
+  });
+
+  factory WeatherModel.fromJson(Map<String, dynamic> json) {
+    return WeatherModel(
+      name: json["name"],
+      temperature: Temperature.fromJson(json["main"]),
+      weatherInfo: (json["weather"] as List<dynamic>)
+          .map((weather) => WeatherInfo.fromJson(weather))
+          .toList(),
+      wind: Wind.fromJson(json["wind"]),
+    );
+  }
 }
 
+class Temperature {
+  final double temp;
+  final double tempMin;
+  final double tempMax;
+  final int pressure;
+  final int humidity;
+  final int seaLevel;
 
-/*
+  Temperature({
+    required this.temp,
+    required this.tempMin,
+    required this.tempMax,
+    required this.humidity,
+    required this.seaLevel,
+    required this.pressure,
+  });
 
-{
-    "coord": {
-        "lon": 7.4306,
-        "lat": 36.4651
-    },
-    "weather": [
-        {
-            "id": 804,
-            "main": "Clouds",
-            "description": "overcast clouds",
-            "icon": "04d"
-        }
-    ],
-    "base": "stations",
-    "main": {
-        "temp": 312.25,
-        "feels_like": 310.32,
-        "temp_min": 312.25,
-        "temp_max": 312.25,
-        "pressure": 1014,
-        "humidity": 16,
-        "sea_level": 1014,
-        "grnd_level": 963
-    },
-    "visibility": 10000,
-    "wind": {
-        "speed": 5.35,
-        "deg": 265,
-        "gust": 9.12
-    },
-    "clouds": {
-        "all": 89
-    },
-    "dt": 1756200754,
-    "sys": {
-        "country": "DZ",
-        "sunrise": 1756184220,
-        "sunset": 1756231656
-    },
-    "timezone": 3600,
-    "id": 2495662,
-    "name": "Guelma",
-    "cod": 200
+  factory Temperature.fromJson(Map<String, dynamic> json) {
+    return Temperature(
+      temp: json["temp"] - 273.15, // Kelvin to Celsius
+      tempMin: json["temp_min"] - 273.15, // Kelvin to Celsius
+      tempMax: json["temp_max"] - 273.15, // Kelvin to Celsius
+      humidity: json["humidity"],
+      seaLevel: json["sea_level"],
+      pressure: json["pressure"],
+    );
+  }
 }
 
- */
+class WeatherInfo {
+  final String main;
+
+  WeatherInfo({required this.main});
+
+  factory WeatherInfo.fromJson(Map<String, dynamic> json) {
+    return WeatherInfo(main: json["main"]);
+  }
+}
+
+class Wind {
+  final double speed;
+
+  Wind({required this.speed});
+
+  factory Wind.fromJson(Map<String, dynamic> json) {
+    return Wind(speed: json["speed"]);
+  }
+}
